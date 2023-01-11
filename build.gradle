@@ -1,0 +1,8 @@
+grails {
+  // should use gradle -Dgrails.run.active=true bootRun
+  exploded = true
+  plugins {
+      implementation project(':app:crew')
+  }
+}
+
