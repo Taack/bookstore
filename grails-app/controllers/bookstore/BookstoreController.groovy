@@ -3,13 +3,18 @@ package bookstore
 import grails.artefact.Controller
 import grails.compiler.GrailsCompileStatic
 import grails.gorm.transactions.Transactional
+import grails.plugin.springsecurity.SpringSecurityService
 import grails.plugin.springsecurity.annotation.Secured
 import org.codehaus.groovy.runtime.MethodClosure
+import org.taack.User
 import taack.base.TaackSimpleSaveService
 import taack.base.TaackUiSimpleService
 import taack.ui.base.UiBlockSpecifier
+import taack.ui.base.UiPrintableSpecifier
+import taack.ui.base.UiShowSpecifier
 import taack.ui.base.block.BlockSpec
 import taack.ui.base.common.ActionIcon
+import taack.ui.base.common.Style
 
 @GrailsCompileStatic
 @Secured(['ROLE_ADMIN'])
@@ -17,6 +22,7 @@ class BookstoreController implements Controller {
     TaackUiSimpleService taackUiSimpleService
     BookstoreUiService bookstoreUiService
     TaackSimpleSaveService taackSimpleSaveService
+    SpringSecurityService springSecurityService
 
     def index() {
         UiBlockSpecifier b = new UiBlockSpecifier()
@@ -231,5 +237,54 @@ class BookstoreController implements Controller {
 
     def selectBookCloseModal(BookstoreBook book) {
         taackUiSimpleService.closeModal(book.id, book.toString())
+    }
+
+    def pdfBook(BookstoreBook book) {
+        def p = new UiPrintableSpecifier().ui {
+            printableHeaderLeft "3.5cm", {
+                show new UiShowSpecifier().ui {
+                    field 'Printing User', (springSecurityService.currentUser as User).username
+                }, BlockSpec.Width.THIRD
+                show new UiShowSpecifier().ui {
+                    field """
+                    <div style="text-align: center;">
+                        <img style="height: 2.5cm;" src="data:image/png;base64,${taackUiSimpleService.dumpAssetBin('logo-taack-web.png')?.encodeBase64()}"/>
+                    </div>
+                    """
+                }, BlockSpec.Width.THIRD
+                show new UiShowSpecifier().ui {
+                    field 'Print Date', new Date().toString(), Style.ALIGN_RIGHT
+                }, BlockSpec.Width.THIRD
+            }
+            printableBody {
+                def a = book.author
+                show new UiShowSpecifier().ui {
+                    section 'Book', {
+                        fieldLabeled book.name_
+                        fieldLabeled book.isbn_
+                    }
+                    section 'Author', {
+                        fieldLabeled book.author_, a.firstName_
+                        fieldLabeled book.author_, a.lastName_
+                    }
+                }, BlockSpec.Width.HALF
+                show new UiShowSpecifier().ui {
+                    section 'Stock', {
+                        fieldLabeled book.number_
+                        fieldLabeled book.stock_
+                    }
+                }, BlockSpec.Width.HALF
+                table bookstoreUiService.buildBorrowedBookTable(), BlockSpec.Width.MAX
+            }
+        }
+        String pdfName = "book_${book.name}_${new Date()}.pdf"
+        if (params.boolean("html")) {
+            params.remove("html")
+            params['isPdf'] = true
+            render(taackUiSimpleService.downloadPdf(p, pdfName, true) as String)
+        } else {
+            params.put("isPdf", true)
+            taackUiSimpleService.downloadPdf(p, pdfName)
+        }
     }
 }

@@ -157,8 +157,10 @@ class BookstoreUiService implements WebAttributes {
                     rowColumn {
                         if (select)
                             rowLink 'Select an Book', ActionIcon.SELECT * ActionIconStyleModifier.SCALE_DOWN, BookstoreController.&selectBookCloseModal as MethodClosure, cb.id, true
-                        else
+                        else {
                             rowLink 'Edit', ActionIcon.EDIT * ActionIconStyleModifier.SCALE_DOWN, BookstoreController.&editBook as MethodClosure, cb.id, true
+                            rowLink 'PDF', ActionIcon.EXPORT_PDF * ActionIconStyleModifier.SCALE_DOWN, BookstoreController.&pdfBook as MethodClosure, cb.id, false
+                        }
                         rowField cb.name
                         rowField cb.bookShelf?.place
                     }
