@@ -333,8 +333,34 @@ class BookstoreUiService implements WebAttributes {
                     sortableFieldHeader bb.endDate_
                 }
             }
-        }
 
+            def objs = taackSimpleFilterService.list(BookstoreBorrowedBook)
+
+            for (def o : objs.aValue) {
+                row {
+                    rowColumn {
+                        rowField o.userCreated.username
+                        rowField o.dateCreated
+                    }
+                    rowColumn {
+                        rowField o.userUpdated.username
+                        rowField o.lastUpdated
+                    }
+                    rowColumn {
+                        rowField o.book.name
+                        rowField o.book.author.firstName + ' ' + o.book.author.lastName
+                    }
+                    rowColumn {
+                        rowField o.borrower.firstName
+                        rowField o.borrower.lastName
+                    }
+                    rowColumn {
+                        rowField o.startDate
+                        rowField o.endDate
+                    }
+                }
+            }
+        }
     }
 
     UiFormSpecifier buildAuthorForm(BookstoreAuthor author) {
