@@ -3,6 +3,7 @@ package bookstore
 import grails.compiler.GrailsCompileStatic
 import org.taack.User
 import taack.ast.annotation.TaackFieldEnum
+import taack.ui.utils.Markdown
 
 @GrailsCompileStatic
 @TaackFieldEnum
@@ -25,10 +26,14 @@ class BookstoreBook {
         number - BookstoreBorrowedBook.countByBookAndEndDateIsNull(this)
     }
 
+    String getAbstractTextHtml() {
+        Markdown.getContentHtml(abstractText)
+    }
+
     static constraints = {
         bookShelf nullable: true
         salePrice nullable: true
-        abstractText nullable: true, widget: 'textarea'
+        abstractText nullable: true, widget: 'markdown'
         isbn nullable: true, validator: { val, obj ->
             if (!val) return
             boolean ok = val ==~ /^(?:ISBN(?:-10)?:?●)?(?=[0-9X]{10}$|(?=(?:[0-9]+[-●]){3})[-●0-9X]{13}$)[0-9]{1,5}[-●]?[0-9]+[-●]?[0-9]+[-●]?[0-9X]$/
@@ -40,5 +45,9 @@ class BookstoreBook {
     @Override
     String toString() {
         return "${name}($id)"
+    }
+
+    static mapping = {
+        abstractText type: 'text'
     }
 }

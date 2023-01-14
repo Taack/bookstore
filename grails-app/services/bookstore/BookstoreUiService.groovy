@@ -402,23 +402,26 @@ class BookstoreUiService implements WebAttributes {
     UiFormSpecifier buildBookForm(BookstoreBook book) {
         BookstoreAuthor a = new BookstoreAuthor()
         new UiFormSpecifier().ui book, {
-            section 'Book', FormSpec.Width.DOUBLE_WIDTH, {
-                col {
-                    field book.isbn_
-                }
-                col {
-                    field book.name_
-                }
-                field book.abstractText_
+            field book.abstractText_
+            col {
+                field book.isbn_
             }
-            section 'Author', {
+            col {
                 ajaxField book.author_, BookstoreController.&selectAuthor as MethodClosure
             }
-            section 'Stocks', {
+            col {
+                field book.name_
+            }
+            col {
                 field book.salePrice_
+            }
+            col {
                 field book.number_
+            }
+            col {
                 ajaxField book.bookShelf_, BookstoreController.&selectShelf as MethodClosure
             }
+
             formAction 'Save', BookstoreController.&saveBook as MethodClosure, true
         }
     }

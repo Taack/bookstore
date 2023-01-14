@@ -259,10 +259,11 @@ class BookstoreController implements Controller {
             printableBody {
                 def a = book.author
                 show new UiShowSpecifier().ui {
-                    section 'Book', {
-                        fieldLabeled book.name_
+                    field """<h1>${book.name}</h1>""", Style.ALIGN_CENTER
+                    fieldUnlabeled Style.MARKDOWN_BODY, book.abstractTextHtml_
+                }, BlockSpec.Width.MAX
+                show new UiShowSpecifier().ui {
                         fieldLabeled book.isbn_
-                    }
                     section 'Author', {
                         fieldLabeled book.author_, a.firstName_
                         fieldLabeled book.author_, a.lastName_
@@ -287,4 +288,53 @@ class BookstoreController implements Controller {
             taackUiSimpleService.downloadPdf(p, pdfName)
         }
     }
+
+//    def pdfBorrower(BookstoreBorrower borrower) {
+//        def p = new UiPrintableSpecifier().ui {
+//            printableHeaderLeft "3.5cm", {
+//                show new UiShowSpecifier().ui {
+//                    field 'Printing User', (springSecurityService.currentUser as User).username
+//                }, BlockSpec.Width.THIRD
+//                show new UiShowSpecifier().ui {
+//                    field """
+//                    <div style="text-align: center;">
+//                        <img style="height: 2.5cm;" src="data:image/png;base64,${taackUiSimpleService.dumpAssetBin('logo-taack-web.png')?.encodeBase64()}"/>
+//                    </div>
+//                    """
+//                }, BlockSpec.Width.THIRD
+//                show new UiShowSpecifier().ui {
+//                    field 'Print Date', new Date().toString(), Style.ALIGN_RIGHT
+//                }, BlockSpec.Width.THIRD
+//            }
+//            printableBody {
+//                def b = borrower
+//                show new UiShowSpecifier().ui {
+//                    section 'Borrower', {
+//                        fieldLabeled book.name_
+//                        fieldLabeled book.isbn_
+//                    }
+//                    section 'Author', {
+//                        fieldLabeled book.author_, a.firstName_
+//                        fieldLabeled book.author_, a.lastName_
+//                    }
+//                }, BlockSpec.Width.HALF
+//                show new UiShowSpecifier().ui {
+//                    section 'Stock', {
+//                        fieldLabeled book.number_
+//                        fieldLabeled book.stock_
+//                    }
+//                }, BlockSpec.Width.HALF
+//                table bookstoreUiService.buildBorrowedBookTable(), BlockSpec.Width.MAX
+//            }
+//        }
+//        String pdfName = "book_${book.name}_${new Date()}.pdf"
+//        if (params.boolean("html")) {
+//            params.remove("html")
+//            params['isPdf'] = true
+//            render(taackUiSimpleService.downloadPdf(p, pdfName, true) as String)
+//        } else {
+//            params.put("isPdf", true)
+//            taackUiSimpleService.downloadPdf(p, pdfName)
+//        }
+//    }
 }

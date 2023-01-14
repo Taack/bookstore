@@ -169,7 +169,7 @@ CREATE TABLE public.bookstore_book (
     author_id bigint NOT NULL,
     name character varying(255) NOT NULL,
     sale_price numeric(19,2),
-    abstract_text character varying(255)
+    abstract_text text
 );
 
 
@@ -487,7 +487,7 @@ COPY public.bookstore_book (id, version, book_shelf_id, user_updated_id, date_cr
 5	0	\N	2	2023-01-06 11:15:06.206	2023-01-06 11:15:06.206	0	2	\N	3	Les aventures de Tintin	\N	This is not a Marvel Comic book
 6	0	\N	2	2023-01-06 11:18:22.748	2023-01-06 11:18:22.748	0	2	\N	4	test	\N	\N
 9	1	\N	2	2023-01-07 21:10:16.161	2023-01-09 20:51:46.727	0	2	\N	3	Test42	123.05	Test
-8	2	11	2	2023-01-07 21:03:34.505	2023-01-11 03:26:28.062	50	2	\N	4	Super 4 life	\N	\N
+8	5	11	2	2023-01-07 21:03:34.505	2023-01-14 02:00:55.707	50	2	\N	4	Super 4 life	\N	This book is a pamphlet or a satyr of our society over **SuperMen**, able to record video while coding at the same time.\r\n\r\nThe hero of this book is in fact the spectator who look at the video... Because coding  rhyme with boring.\r\n\r\nThis book is also available in:\r\n- PDF\r\n- ePub\r\n- HTML\r\n\r\nThe second tome of this trilogy will introduce new characters, who code in <u>Javascript</u> (and in <s>Typescript</s>) and fight for keeping things unchanged. It will be called:\r\n\r\n`The Dart knight...` or The [DartLang](https://dart.dev/) Chivalry.
 \.
 
 
@@ -538,7 +538,7 @@ OHEQKmbR8kaUVOQ40gP4bQ==	admin	TTFd7UqJnMwUDXdwegQJAA==	2023-01-06 14:26:27.29
 wownQEcWx+/RYDseFVdU+w==	admin	c4dep1Lachud0kdTKiwfAA==	2023-01-08 18:19:36.937
 LJJ1JledYlPlVL3aiUa5VQ==	admin	+XUcSC+RjqAXwT+afRNy1A==	2023-01-11 03:20:41.408
 zFTPwsoe+T/oKXh+AuiHlw==	admin	Nm5HGo7Jw731hRFWjWaxGg==	2023-01-11 06:58:27.5
-NWsU7P9U+92bZDZs1ZXG8g==	admin	L5cBdpuDfY0H136aiNwtJw==	2023-01-13 23:52:26.963
+NWsU7P9U+92bZDZs1ZXG8g==	admin	TeTXaYSbSVbKuP8f+A4vlw==	2023-01-14 01:38:40.715
 \.
 
 
