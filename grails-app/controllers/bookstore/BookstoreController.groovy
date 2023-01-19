@@ -1,6 +1,6 @@
 package bookstore
 
-import grails.artefact.Controller
+import grails.web.api.WebAttributes
 import grails.compiler.GrailsCompileStatic
 import grails.gorm.transactions.Transactional
 import grails.plugin.springsecurity.SpringSecurityService
@@ -18,7 +18,7 @@ import taack.ui.base.common.Style
 
 @GrailsCompileStatic
 @Secured(['ROLE_ADMIN'])
-class BookstoreController implements Controller {
+class BookstoreController implements WebAttributes {
     TaackUiSimpleService taackUiSimpleService
     BookstoreUiService bookstoreUiService
     TaackSimpleSaveService taackSimpleSaveService
